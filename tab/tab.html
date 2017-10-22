@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+	*{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.tab{
+		width: 600px;
+		height: 30px;
+		background: skyblue;
+		margin: 0 auto;
+	}
+	.tab>li{
+		width: 200px;
+		height: 100%;
+		border-right: 2px solid #fff;
+		box-sizing: border-box;
+		text-align: center;
+		line-height: 30px;
+		font-size: 16px;
+		color: #fff;
+		float: left;
+	}
+	.content{
+		width: 600px;
+		height: auto;
+		background: pink;
+		margin: 0 auto;
+		display: none;
+	}
+	.content ul li{
+		border-bottom: 1px solid #fff;
+		padding: 5px 10px;
+		color: #fff;
+	}
+	.content .active{
+		display: block;
+	}
+</style>
+<body>
+	<ul class="tab">
+		<li class="arr">arr</li>
+		<li class="news">news</li>
+		<li class="pe">pe</li>
+	</ul>
+	<div class="content">
+		<ul>
+			<li>12</li>
+			<li>212</li>
+			<li>1212</li>
+		</ul>
+		<ul></ul>
+		<ul></ul>
+	</div>
+</body>
+<script>
+	let lis=document.querySelectorAll('.tab>li');
+	let uls=document.querySelectorAll('.content > ul');
+	lis.forEach((element,index)=>{
+		element.onclick=function(){
+			for(let i=0;i<uls.length;i++){
+				uls[i].classList.remove('active');
+			}
+			uls[index].classList.add('active');
+			fn(this.className);
+		}
+	})
+	function fn(type){
+		let xml=new XMLHttpRequest();
+		xml.open('post','data.php',true);
+		xml.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+		xml.send('name='+type);
+		xml.responseType='json';
+		xml.onreadystatechange=function(){
+			if(xml.readyState==4){
+				if(xml.status==200){
+					for(let i=0;i<xml.response.length;i++){
+						obj.innerHTML+=`<li>${xml.response[i].title}---${xml.response[i].content}</li>`;
+					}
+				}
+			}
+		}
+	}
+</script>
+</html>
+<!-- method url data function(){}
+ajax({method:'get',url:'data.php',data:'name=zhangsan&age=18',dataType:'text',success:function(data){
+	....
+}}) 
+ajax({url:'data.php',success:function(data){
+	
+}})
+-->
